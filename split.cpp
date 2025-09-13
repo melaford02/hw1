@@ -11,48 +11,44 @@ the function below should be the only one in this file.
 */
 
 #include "split.h"
-#include <cstddef> // for NULL
 
 /* Add a prototype for a helper function here if you need */
-static void addToEnd(Node*& list, Node* item);
+
+static void addNode(Node*& head, Node* curr);
 
 void split(Node*& in, Node*& odds, Node*& evens)
 {
   /* Add code here */
-  // WRITE YOUR CODE HERE
+// WRITE YOUR CODE HERE
 
-  if(in == nullptr) {
+if (in == nullptr){
     return;
-  }
+}
 
-  Node* cur = in;
- 
-  if (in != nullptr){
-    in = in->next;
-    cur->next = nullptr;
-  }
+Node* curr = in; 
+Node* rest = in->next;
+curr->next = nullptr;
 
-  // decide if odd or even
-  int num_value = cur->value;
-  bool even_num = (num_value % 2 == 0);
+if (curr->value % 2 == 0){
+    addNode(evens, curr);
+} else{
+    addNode(odds, curr);
+}
 
-  if (even_num){
-    addToEnd(evens, cur);
-  } else {
-    addToEnd(odds, cur);
-  }
+in = rest;
+split(in, odds, evens);
 
-  
-  split(in, odds, evens);
 }
 
 /* If you needed a helper function, write it here */
-static void addToEnd(Node*& list, Node* item) {
-if (list == nullptr){
-    list = item;
-} else if (list->next == nullptr){
-    list->next = item;
-} else {
-    addToEnd(list->next, item);
-}
+static void addNode(Node*& head, Node* curr){
+    if (head == nullptr){
+        head = curr;
+        return;
+    }
+    
+    //adding to front is faster (runtime)
+    Node* temp = head;
+    curr->next = temp;
+    head = curr;
 }
